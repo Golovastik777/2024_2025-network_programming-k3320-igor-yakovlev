@@ -1,1 +1,2 @@
-x
+loopback_ip: 1.1.1.1
+router_id: 1.1.1.1
