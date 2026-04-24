@@ -235,7 +235,43 @@ set enabled=yes
 /system ntp client servers
 add address=216.239.35.0
 ```
-
+Конфигурация chr2:
+```
+# 2026-04-24 12:50:21 by RouterOS 7.22.2
+# system id = nLMDPRf4ExO
+#
+/interface bridge
+add name=loopback0
+/interface ethernet
+set [ find default-name=ether1 ] disable-running-check=no
+/interface wireguard
+add listen-port=13231 mtu=1420 name=wg0
+/routing ospf instance
+add name=ospf-instance router-id=2.2.2.2
+add name=ospf-instance router-id=2.2.2.2
+/routing ospf area
+add instance=ospf-instance name=backbone
+add instance=ospf-instance name=backbone
+/interface wireguard peers
+add allowed-address=10.0.0.0/24 endpoint-address=84.54.59.107 endpoint-port=\
+    51820 interface=wg0 name=peer2 persistent-keepalive=25s public-key=\
+    "aH9zEFcOB6gGwUKVgV2HjrJYSSnTp+ngsClKD8yq2xM="
+/ip address
+add address=10.0.0.2/24 interface=*3 network=10.0.0.0
+add address=10.0.0.3/24 interface=wg0 network=10.0.0.0
+add address=2.2.2.2 interface=loopback0 network=2.2.2.2
+/ip dhcp-client
+add interface=ether1 name=client1
+/routing ospf interface-template
+add area=backbone interfaces=wg0,loopback0 type=ptp
+add area=backbone interfaces=wg0,loopback0 type=ptp
+/system identity
+set name=chr2
+/system ntp client
+set enabled=yes
+/system ntp client servers
+add address=216.239.35.0
+```
 ### Схема сети
 
 ![Схема](images/diagram.png)
